@@ -1,19 +1,22 @@
-#![feature(plugin_registrar, quote)]
-#![feature(rustc_private)]
+#![cfg_attr(not(feature = "with-syntex"), feature(plugin_registrar, rustc_private))]
 
-extern crate rustc;
-extern crate rustc_plugin;
-extern crate syntax;
+#[cfg(not(feature = "with-syntex"))] extern crate rustc;
+#[cfg(not(feature = "with-syntex"))] extern crate rustc_plugin;
+#[cfg(not(feature = "with-syntex"))] extern crate syntax;
+#[cfg(not(feature = "with-syntex"))] use rustc_plugin::Registry;
+
+#[cfg(feature = "with-syntex")] extern crate quasi;
+#[cfg(feature = "with-syntex")] extern crate syntex;
+#[cfg(feature = "with-syntex")] extern crate syntex_syntax as syntax;
+#[cfg(feature = "with-syntex")] use syntex::Registry;
+
 #[cfg(feature="with-rustc-serialize")]
 extern crate rustc_serialize;
 #[cfg(feature="with-serde")]
 extern crate serde_json;
 
-use rustc_plugin::Registry;
+#[cfg(feature = "with-syntex")]
+include!(concat!(env!("OUT_DIR"), "/lib.rs"));
 
-mod plugin;
-
-#[plugin_registrar]
-pub fn plugin_registrar(reg: &mut Registry) {
-    reg.register_macro("json", plugin::expand);
-}
+#[cfg(not(feature = "with-syntex"))]
+include!("lib.in.rs");

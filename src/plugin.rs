@@ -2,10 +2,11 @@ use syntax::ast::TokenTree;
 use syntax::codemap::Span;
 use syntax::ptr::P;
 
-use syntax::ast::Expr;
+use syntax::ast::{Expr, LitKind, StrStyle};
 use syntax::ext::base::{ExtCtxt, MacResult, MacEager};
 use syntax::parse::parser::Parser;
 use syntax::parse::token::Token;
+use syntax::codemap::DUMMY_SP;
 
 pub fn expand<'cx>(cx: &'cx mut ExtCtxt, _: Span, tts: &[TokenTree]) -> Box<MacResult + 'cx> {
     let mut parser = cx.new_parser_from_tts(tts);
@@ -51,7 +52,7 @@ fn parse_json(cx: &ExtCtxt, parser: &mut Parser) -> P<Expr> {
             let r_brace = Token::CloseDelim(DelimToken::Brace);
             let kvs = parser.parse_seq_to_end(&r_brace, comma_sep!(), |p| {
                 let (istr, _) = p.parse_str().ok().unwrap();
-                let s = &*istr;
+                let s = cx.expr_lit(DUMMY_SP, LitKind::Str(istr, StrStyle::Cooked));
                 let _ = p.expect(&Token::Colon);
                 let key = quote_expr!(cx, {
                     use ::std::borrow::ToOwned;
