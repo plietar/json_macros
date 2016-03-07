@@ -1,4 +1,4 @@
-#![cfg_attr(not(feature = "with-syntex"), feature(plugin_registrar, rustc_private))]
+#![cfg_attr(not(feature = "with-syntex"), feature(quote, plugin_registrar, rustc_private))]
 
 #[cfg(not(feature = "with-syntex"))] extern crate rustc;
 #[cfg(not(feature = "with-syntex"))] extern crate rustc_plugin;
