@@ -6,11 +6,11 @@ pub fn main() {
     use std::path::Path;
 
     let mut registry = syntex::Registry::new();
-    let src = Path::new("src/lib.in.rs");
-    let dst = Path::new(&env::var("OUT_DIR").unwrap()).join("lib.rs");
+    let src = Path::new("src/plugin.in.rs");
+    let dst = Path::new(&env::var("OUT_DIR").unwrap()).join("plugin.rs");
 
     quasi_codegen::register(&mut registry);
-    registry.expand("librespot", &src, &dst).unwrap();
+    registry.expand("json_macros", &src, &dst).unwrap();
 }
 
 #[cfg(not(feature = "with-syntex"))]

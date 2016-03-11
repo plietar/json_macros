@@ -15,8 +15,20 @@ extern crate rustc_serialize;
 #[cfg(feature="with-serde")]
 extern crate serde_json;
 
-#[cfg(feature = "with-syntex")]
-include!(concat!(env!("OUT_DIR"), "/lib.rs"));
+mod plugin {
+    #[cfg(feature = "with-syntex")]
+    include!(concat!(env!("OUT_DIR"), "/plugin.rs"));
+    #[cfg(not(feature = "with-syntex"))]
+    include!("plugin.in.rs");
+}
 
 #[cfg(not(feature = "with-syntex"))]
-include!("lib.in.rs");
+#[plugin_registrar]
+pub fn plugin_registrar(reg: &mut Registry) {
+    reg.register_macro("json", plugin::expand);
+}
+
+#[cfg(feature = "with-syntex")]
+pub fn plugin_registrar(reg: &mut Registry) {
+    reg.add_macro("json", plugin::expand);
+}
