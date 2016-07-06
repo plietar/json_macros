@@ -1,4 +1,4 @@
-use syntax::ast::TokenTree;
+use syntax::tokenstream::TokenTree;
 use syntax::codemap::Span;
 use syntax::ptr::P;
 

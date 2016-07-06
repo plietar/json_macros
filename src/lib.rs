@@ -29,6 +29,11 @@ pub fn plugin_registrar(reg: &mut Registry) {
 }
 
 #[cfg(feature = "with-syntex")]
-pub fn plugin_registrar(reg: &mut Registry) {
-    reg.add_macro("json", plugin::expand);
+pub fn expand<S, D>(src: S, dst: D) -> Result<(), syntex::Error>
+    where S: AsRef<std::path::Path>,
+          D: AsRef<std::path::Path>,
+{
+    let mut registry = Registry::new();
+    registry.add_macro("json", plugin::expand);
+    registry.expand("", src.as_ref(), dst.as_ref())
 }

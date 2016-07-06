@@ -22,13 +22,12 @@ with-syntex = ["syntex", "syntex_syntax", "quasi/with-syntex", "quasi_codegen/wi
 [dependencies]
 rustc-serialize = { version = "^0.3", optional = true }
 serde_json      = { version = "^0.6", optional = true }
-syntex          = { version = "^0.32", optional = true }
-syntex_syntax   = { version = "^0.32", optional = true }
-quasi           = { version = "^0.10", optional = true }
+syntex          = { version = "^0.37", optional = true }
+syntex_syntax   = { version = "^0.37", optional = true }
+quasi           = { version = "^0.14", optional = true }
 
 [build-dependencies]
-syntex          = { version = "^0.32", optional = true }
-quasi_codegen   = { version = "^0.10", optional = true }
+quasi_codegen   = { version = "^0.14", optional = true }
 
 [dev-dependencies]
 serde           = "^0.6"
