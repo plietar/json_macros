@@ -17,19 +17,20 @@ pub fn expand<'cx>(cx: &'cx mut ExtCtxt, _: Span, tts: &[TokenTree]) -> Box<MacR
     MacEager::expr(expr)
 }
 
+macro_rules! comma_sep {
+    () =>  {
+        ::syntax::parse::common::SeqSep {
+            sep: Some(Token::Comma),
+            trailing_sep_allowed: true // we could be JSON pedants...
+        }
+    }
+}
+
+
 #[cfg(feature="with-rustc-serialize")]
 fn parse_json(cx: &ExtCtxt, parser: &mut Parser) -> P<Expr> {
     use syntax::ext::build::AstBuilder;
     use syntax::parse::token::DelimToken;
-
-    macro_rules! comma_sep {
-        () =>  {
-            ::syntax::parse::common::SeqSep {
-                sep: Some(Token::Comma),
-                trailing_sep_allowed: true // we could be JSON pedants...
-            }
-        }
-    }
 
     let orig_span = parser.span;
 
@@ -101,15 +102,6 @@ fn parse_json(cx: &ExtCtxt, parser: &mut Parser) -> P<Expr> {
 fn parse_json(cx: &ExtCtxt, parser: &mut Parser) -> P<Expr> {
     use syntax::ext::build::AstBuilder;
     use syntax::parse::token::DelimToken;
-
-    macro_rules! comma_sep {
-        () =>  {
-            ::syntax::parse::common::SeqSep {
-                sep: Some(Token::Comma),
-                trailing_sep_allowed: true // we could be JSON pedants...
-            }
-        }
-    }
 
     let orig_span = parser.span;
 

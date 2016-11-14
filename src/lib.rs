@@ -18,6 +18,7 @@ extern crate serde_json;
 mod plugin {
     #[cfg(feature = "with-syntex")]
     include!(concat!(env!("OUT_DIR"), "/plugin.rs"));
+
     #[cfg(not(feature = "with-syntex"))]
     include!("plugin.in.rs");
 }
